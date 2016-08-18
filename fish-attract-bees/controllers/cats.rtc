@@ -4,8 +4,9 @@ sub_addr: tcp://localhost:5557
 msg_addr: tcp://*:10103
 neighbors:
   casu-001:
-    address: tcp://143.50.158.98:5555
+    #address: tcp://143.50.158.98:5555
+    address: tcp://143.50.158.98:10103   
     name: casu-001
   casu-002:
-    address: tcp://143.50.158.98:20202
+    address: tcp://143.50.158.98:10103
     name: casu-002
