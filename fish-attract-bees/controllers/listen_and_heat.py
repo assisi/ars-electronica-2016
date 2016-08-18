@@ -28,6 +28,7 @@ if __name__ == '__main__':
     while True:
         msg = c.read_message()
         if msg:
+            print('Received: ' + msg['data'])
             data = msg['data'].split(',')
             count = 0
             for item in data:

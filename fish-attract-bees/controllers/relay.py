@@ -11,9 +11,9 @@ if __name__ == '__main__':
     pub.bind('tcp://*:10103')
     print('Publisher bound!')
 
-    sub = context.socket(zmq.sub)
+    sub = context.socket(zmq.SUB)
     # Connect the address to listen to CATS
-    sub.connect('tcp://143.50.158.98:5557')
+    sub.bind('tcp://143.50.158.98:5556')
     sub.setsockopt(zmq.SUBSCRIBE,'casu-001')
     sub.setsockopt(zmq.SUBSCRIBE,'casu-002')
     """
@@ -23,10 +23,10 @@ if __name__ == '__main__':
     print('Connected right!')
     sub.setsockopt(zmq.SUBSCRIBE, 'cats')
     """
-    print('Everything all subscribers!')
+    print('Connected all subscribers!')
 
     while True:
         [name, msg, sender, data] = sub.recv_multipart()
-        print('Received: ' + name + ';' + msg + ';' + sender + ';' + data)
-
+        print('Sending: ' + name + ';' + msg + ';' + sender + ';' + data)
+        pub.send_multipart([name,'Message','cats',data])
     
