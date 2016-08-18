@@ -1,0 +1,22 @@
+bee-arena :
+
+    casu-001 :
+        pose : {x : -10, y : 0, yaw : -1.57}
+        sub_addr : tcp://bbg-001:1555
+        pub_addr : tcp://bbg-001:1556
+        msg_addr : tcp://bbg-001:10201
+
+    casu-002 :
+        pose : {x : 10, y : 0, yaw : -1.57}
+        sub_addr : tcp://bbg-001:2555
+        pub_addr : tcp://bbg-001:2556
+        msg_addr : tcp://bbg-001:20202
+
+fish-tank : 
+
+    cats :
+        pose : {x : 0, y : -10, yaw : 1.57}
+        sub_addr : tcp://control-workstation:5557
+        pub_addr : tcp://control-workstation:5558
+        msg_addr : tcp://control-workstation:10103
+ 

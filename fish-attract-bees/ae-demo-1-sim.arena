@@ -4,19 +4,19 @@ sim-bee-arena :
         pose : {x : -10, y : 0, yaw : 0}
         sub_addr : tcp://localhost:5555
         pub_addr : tcp://localhost:5556
-        msg_addr : tcp://*:10101
+        msg_addr : tcp://localhost:10101
 
     casu-002 :
         pose : {x : 10, y : 0, yaw : 3.14}
         sub_addr : tcp://localhost:5555
         pub_addr : tcp://localhost:5556
-        msg_addr : tcp://*:10102
+        msg_addr : tcp://localhost:10102
 
 sim-fish-tank : 
 
     cats :
-        pose : {x : 10, y : 0, yaw : 1.57}
+        pose : {x : 0, y : -10, yaw : 1.57}
         sub_addr : tcp://localhost:5555
         pub_addr : tcp://localhost:5556
-        msg_addr : tcp://*:10103
+        msg_addr : tcp://localhost:10103
  
