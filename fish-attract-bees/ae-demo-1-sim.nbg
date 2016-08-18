@@ -1,0 +1,9 @@
+digraph "ae-demo-1-sim" {
+    subgraph "sim-bee-arena" {
+    
+    }
+    subgraph "sim-fish-tank" {
+        "sim-fish-tank/cats" -> "sim-bee-arena/casu-001" [label = "casu-001"]
+        "sim-fish-tank/cats" -> "sim-bee-arena/casu-002" [label = "casu-002"]
+    }
+}

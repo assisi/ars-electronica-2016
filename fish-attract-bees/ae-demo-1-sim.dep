@@ -1,0 +1,25 @@
+# Simulation deployment
+
+sim-bee-arena :
+
+    casu-001 :
+        hostname : localhost
+        user : assisi
+        prefix : deploy
+        controller : controllers/listen_and_heat.py
+        args : ['left']
+
+    casu-002 :
+        hostname : localhost
+        user : assisi
+        prefix : deploy
+        controller : controllers/listen_and_heat.py
+        args : ['right']
+
+sim-fish-arena : 
+
+    cats :
+        hostname : localhost
+        user : assisi
+        prefix : deploy
+        controller : controllers/fake_cats.py

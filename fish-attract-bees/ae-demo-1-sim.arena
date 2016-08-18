@@ -1,0 +1,22 @@
+sim-bee-arena :
+
+    casu-001 :
+        pose : {x : -10, y : 0, yaw : 0}
+        sub_addr : tcp://localhost:5555
+        pub_addr : tcp://localhost:5556
+        msg_addr : tcp://*:10101
+
+    casu-002 :
+        pose : {x : 10, y : 0, yaw : 3.14}
+        sub_addr : tcp://localhost:5555
+        pub_addr : tcp://localhost:5556
+        msg_addr : tcp://*:10102
+
+sim-fish-tank : 
+
+    cats :
+        pose : {x : 10, y : 0, yaw : 1.57}
+        sub_addr : tcp://localhost:5555
+        pub_addr : tcp://localhost:5556
+        msg_addr : tcp://*:10103
+ 

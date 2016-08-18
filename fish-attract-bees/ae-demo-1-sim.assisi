@@ -1,0 +1,6 @@
+# Simulation deployment project for the 
+# Ars Electronica Demo 1: Fish attract bees
+
+arena: ae-demo-1-sim.arena
+nbg: ae-demo-1-sim.nbg
+dep: ae-demo-1-sim.dep
