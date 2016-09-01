@@ -1,0 +1,10 @@
+digraph "ae-demo-2" {
+    subgraph "bee-arena" {
+        "bee-arena/casu-001" -> "fish-tank/cats" [label = "cats"]
+        "bee-arena/casu-002" -> "fish-tank/cats" [label = "cats"]    
+    }
+    subgraph "fish-tank" {
+        "fish-tank/cats" -> "bee-arena/casu-001" [label = "casu-001"]
+        "fish-tank/cats" -> "bee-arena/casu-002" [label = "casu-002"]
+    }
+}

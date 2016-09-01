@@ -1,0 +1,25 @@
+# Simulation deployment
+
+bee-arena :
+
+    casu-001 :
+        hostname : bbg-001
+        user : assisi
+        prefix : deploy/ae-2
+        controller : controllers/listen_and_heat.py
+        args : ['left']
+
+    casu-002 :
+        hostname : bbg-001
+        user : assisi
+        prefix : deploy/ae-2
+        controller : controllers/listen_and_heat.py
+        args : ['right']
+
+fish-tank : 
+
+    cats :
+        hostname : localhost
+        user : assisi
+        prefix : deploy/ae-2
+        controller : controllers/fake_cats.py
