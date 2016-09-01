@@ -1,0 +1,10 @@
+digraph dual_expt_virt {
+    # virtual
+    subgraph "bee_arena1" {
+      "casu-001" -> "casu-002" [ label="inhib12" ; weight=-1.0 ]
+      "casu-002" -> "casu-001" [ label="inhib21" ; weight=-1.0 ]
+    }
+
+}
+
+

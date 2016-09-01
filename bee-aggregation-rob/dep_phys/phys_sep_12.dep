@@ -1,0 +1,23 @@
+# two sets of expts, with with 2 casus each, virtual.
+bee_arena1:
+    casu-001 :
+        hostname : bbg-001
+        user : assisi
+        prefix : deploy
+        controller: ../robots/enhancer.py
+        args : [-c enh.conf, --nbg phys_sep_12.nbg]
+        extra: [../config/enh.conf, phys_sep_12.nbg,
+                ../robots/calibration.py, ../robots/interactions.py, ]
+        results : ['*.csv', '*.log', '*.py', '*log', '*calib*', '*.sync*']
+
+    casu-002 :
+        hostname : bbg-001
+        user : assisi
+        prefix : deploy
+        controller: ../robots/enhancer.py
+        args : [-c enh.conf, --nbg phys_sep_12.nbg]
+        extra: [../config/enh.conf, phys_sep_12.nbg,
+                ../robots/calibration.py, ../robots/interactions.py, ]
+        results : ['*.csv', '*.log', '*.py', '*log', '*calib*', '*.sync*']
+
+
