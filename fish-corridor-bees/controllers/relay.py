@@ -31,7 +31,7 @@ class Relay:
 
         self.sub_local = self.context.socket(zmq.SUB)
         self.sub_local.connect('tcp://bbg-001:10201')
-        self.sub_local.connect('tcp://bbg-001:10202')
+        self.sub_local.connect('tcp://bbg-001:20202')
         self.sub_local.setsockopt(zmq.SUBSCRIBE,'cats')
         print('Local subscribers bound!')
     
@@ -47,13 +47,13 @@ class Relay:
         while not self.stop:
             [name, msg, sender, data] = self.sub_internet.recv_multipart()
             print('Received from cats: ' + name + ';' + msg + ';' + sender + ';' + data)
-            self.pub_local.send_multipart([name,'Message','cats',data])
+            self.pub_local.send_multipart([name,msg,sender,data])
 
     def recieve_from_local(self):
         while not self.stop:
             [name, msg, sender, data] = self.sub_local.recv_multipart()
             print('Received from arena: ' + name + ';' + msg + ';' + sender + ';' + data)
-            self.pub_internet.send_multipart(['cats','Message',name,data])
+            self.pub_internet.send_multipart([name,msg,sender,data])
         
 if __name__ == '__main__':
 
