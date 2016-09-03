@@ -67,3 +67,7 @@ target/
 
 # Graphviz generated files
 *.pdf
+
+# Qt files
+*.user
+build-*
