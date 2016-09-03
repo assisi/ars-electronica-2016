@@ -3,13 +3,13 @@ bee_arena1:
         pose : {x : -8, y : 5, yaw : 0}
         sub_addr : tcp://bbg-001:1555
         pub_addr : tcp://bbg-001:1556
-        msg_addr : tcp://bbg-001:10201
+        msg_addr : tcp://bbg-001:40201
 
     casu-002 :
         pose : {x : 8, y : 5, yaw : 0}
         sub_addr : tcp://bbg-001:2555
         pub_addr : tcp://bbg-001:2556
-        msg_addr : tcp://bbg-001:20202
+        msg_addr : tcp://bbg-001:40202
 
 
 

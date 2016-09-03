@@ -1,6 +1,6 @@
 # This file describes a deployment project
 
-arena: phys_125.arena
+arena: phys_12.arena
 nbg: phys_sep_12.nbg
 dep: phys_sep_12.dep
 
