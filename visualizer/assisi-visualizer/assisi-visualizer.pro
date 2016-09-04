@@ -12,21 +12,21 @@ TARGET = assisi-visualizer
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    visualizer.cpp \
-    subscriber.cpp
+SOURCES += \
+    src/main.cpp \
+    src/subscriber.cpp \
+    src/visualizer.cpp
 
 HEADERS  += \
-    visualizer.h \
-    subscriber.h \
-    nzmqt/nzmqt.hpp \
-    nzmqt/impl.hpp
+    include/subscriber.h \
+    include/visualizer.h \
+    include/nzmqt/nzmqt.hpp
 
 FORMS    += \
-    vassisi.ui
+    ui/vassisi.ui
 
 RESOURCES += \
-    artwork.qrc
+    resources/artwork.qrc
 
 LIBS += \
     -lzmq
