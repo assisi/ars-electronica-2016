@@ -1,20 +1,26 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "visualizer.h"
+#include "ui_vassisi.h"
+#include "subscriber.h"
+
 #include <QPainter>
 
-Widget::Widget(QWidget *parent) :
+Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Widget)
+    ui(new Ui::VAssisi)
 {
+    //TODO: Implement config file reading
+    sub_ = new Subscriber("tcp://127.0.0.1:5555","ping",this);
+    qDebug() << "Created subscriber!";
     ui->setupUi(this);
 }
 
-Widget::~Widget()
+Visualizer::~Visualizer()
 {
+    delete sub_;
     delete ui;
 }
 
-void Widget::paintEvent(QPaintEvent *event)
+void Visualizer::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPixmap ribot("://artwork/ribot.jpg");
