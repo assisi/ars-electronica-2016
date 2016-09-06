@@ -84,7 +84,6 @@ void Subscriber::messageReceived(const QList<QByteArray>& message)
                 {
                     casu_data[name].ir_ranges[i] = 0.0;
                 }
-                qDebug() << name.c_str() << " ir " << i << " " << casu_data[name].ir_ranges[i];
             }
         }
         emit pingReceived(message);

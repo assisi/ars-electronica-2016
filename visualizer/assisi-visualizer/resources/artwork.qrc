@@ -3,5 +3,6 @@
         <file>artwork/ribot.jpg</file>
         <file>artwork/bee.svg</file>
         <file>artwork/button.svg</file>
+        <file>artwork/beearena.svg</file>
     </qresource>
 </RCC>

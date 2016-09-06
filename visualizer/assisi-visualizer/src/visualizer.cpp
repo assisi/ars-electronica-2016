@@ -61,11 +61,11 @@ void Visualizer::paintEvent(QPaintEvent *event)
     //painter.draw...
 
     // Draw bee arena
-    painter.drawRect(bee_arena_);
+    svg_->load(QString("://artwork/beearena.svg"));
+    svg_->render(&painter, bee_arena_);
+    //painter.drawRect(bee_arena_);
 
     /* Draw CASU signals and bees */
-
-    //painter.save();
 
     // Draw top casu heating area
     double r = heating_area_top_.height()/2.0;
@@ -134,9 +134,12 @@ void Visualizer::paintEvent(QPaintEvent *event)
         }
     }
 
-    //painter.restore();
+    painter.save();
     svg_->load(QString("://artwork/button.svg"));
+    //painter.rotate(temp_ref);
     svg_->render(&painter,casu_top_);
+    painter.restore();
+    //painter.rotate(temp_ref);
     svg_->render(&painter,casu_bottom_);
 
     // Draw comms
