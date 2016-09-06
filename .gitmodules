@@ -1,0 +1,3 @@
+[submodule "visualizer/assisi-visualizer/msg"]
+	path = visualizer/assisi-visualizer/msg
+	url = https://github.com/larics/assisi-msg

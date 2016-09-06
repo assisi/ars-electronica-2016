@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>artwork/ribot.jpg</file>
+        <file>artwork/bee.svg</file>
+        <file>artwork/button.svg</file>
     </qresource>
 </RCC>
