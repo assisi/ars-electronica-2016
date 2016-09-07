@@ -38,6 +38,13 @@ public:
         //! Initialize all values to reasonable defaults
         FishData();
 
+        //! Append position
+        /*!
+         * Automatically updates the circular buffer of positions
+         * and computes the motion direction.
+         */
+        void appendPos(double x, double y);
+
         QList<double> x;
         QList<double> y;
         //! +1 is CCW, -1 is CW

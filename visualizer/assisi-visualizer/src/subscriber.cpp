@@ -94,6 +94,14 @@ void Subscriber::messageReceived(const QList<QByteArray>& message)
         }
         emit pingReceived(message);
     }
+    else if (name == "FishPosition")
+    {
+
+    }
+    else if (name == "CASUPosition")
+    {
+
+    }
 }
 
 Subscriber::CasuData::CasuData(void)
@@ -113,5 +121,5 @@ Subscriber::FishData::FishData(void)
       y(1),
       direction(1)
 {
-
+    x.at(0)
 }

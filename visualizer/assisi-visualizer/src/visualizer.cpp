@@ -21,11 +21,13 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
 
     QList<QString> addresses;
     addresses.append("tcp://localhost:5555");
-    //addresses.append("tcp://localhost:5555");
+    addresses.append("tcp://cats-workstation:10203");
 
     QList<QString> topics;
     topics.append("casu-001");
     topics.append("casu-002");
+    topics.append("FishPosition");
+    topics.append("CASUPosition");
 
     sub_ = new Subscriber(addresses,topics,this);
 
