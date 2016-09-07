@@ -43,20 +43,24 @@ public:
          * Automatically updates the circular buffer of positions
          * and computes the motion direction.
          */
-        void appendPos(double x, double y);
+        void appendPos(double xk, double yk);
 
         QList<double> x;
         QList<double> y;
         //! +1 is CCW, -1 is CW
         double direction;
+        int buff_max;
+        // Rectangle for rendering the fish pose
+        QRectF pose;
     };
-    typedef std::map<std::string,FishData> FishMap;
+    typedef std::map<QString,FishData> FishMap;
 
     //! Stores fish data
     /*! Everything is public, but
         Only the subscriber is supposed to write!
      */
     FishMap fish_data;
+    FishMap ribot_data;
 
 signals:
     void pingReceived(const QList<QByteArray>& message);

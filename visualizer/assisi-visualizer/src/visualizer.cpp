@@ -75,7 +75,19 @@ void Visualizer::paintEvent(QPaintEvent *event)
     //painter.drawRect(fish_tank_inner_);
 
     // Draw fish
-    //painter.draw...
+    for (Subscriber::FishMap::iterator it = sub_->fish_data.begin(); it != sub_->fish_data.end(); it++)
+    {
+        if (it->first().contains(QString("fish")))
+        {
+            svg_->load(QString("://artwork/ribot.svg"));
+            svg_->render(&painter,);
+        }
+        else if (it->first().contains(QSting("ribot")))
+        {
+            svg_->load(QString("://artwork/ribot.svg"));
+            svg_->render(&painter,);
+        }
+    }
 
     // Draw bee arena
     svg_->load(QString("://artwork/beearena.svg"));

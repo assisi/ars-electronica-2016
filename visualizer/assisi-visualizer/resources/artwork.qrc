@@ -6,5 +6,7 @@
         <file>artwork/fisharena2.svg</file>
         <file>artwork/doublearrow.svg</file>
         <file>artwork/arrow.svg</file>
+        <file>artwork/fish.svg</file>
+        <file>artwork/ribot.svg</file>
     </qresource>
 </RCC>

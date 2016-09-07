@@ -18,13 +18,13 @@ Subscriber::Subscriber(const QList<QString>& addresses,
     socket_->setObjectName("Subscriber.Socket.socket(SUB)");
     connect(socket_, &ZMQSocket::messageReceived, this, &Subscriber::messageReceived);
 
-    for (unsigned i = 0; i < topics_.length(); i++)
+    for (int i = 0; i < topics_.length(); i++)
     {
         socket_->subscribeTo(topics_.at(i));
         qDebug() << "Subscribed to " << topics_.at(i);
     }
 
-    for (unsigned i = 0; i < addresses_.length(); i++)
+    for (int i = 0; i < addresses_.length(); i++)
     {
         socket_->connectTo(addresses_.at(i));
         qDebug() << "Connected socket to address " << addresses_.at(i);
@@ -47,6 +47,15 @@ Subscriber::Subscriber(const QList<QString>& addresses,
     casu_data["casu-002"].ir_thresholds[3] = 12000;
     casu_data["casu-002"].ir_thresholds[4] = -12000;
     casu_data["casu-002"].ir_thresholds[5] = 12000;
+
+    fish_data["fish-001"] = FishData();
+    fish_data["fish-002"] = FishData();
+    fish_data["fish-003"] = FishData();
+    fish_data["fish-004"] = FishData();
+    fish_data["fish-005"] = FishData();
+
+    fish_data["ribot-001"] = FishData();
+    fish_data["ribot-002"] = FishData();
 }
 
 void Subscriber::messageReceived(const QList<QByteArray>& message)
@@ -78,7 +87,7 @@ void Subscriber::messageReceived(const QList<QByteArray>& message)
             // CASU IR readings
             AssisiMsg::RangeArray ranges;
             ranges.ParseFromString(data);
-            for (unsigned i = 0; i < ranges.raw_value_size(); i++)
+            for (int i = 0; i < ranges.raw_value_size(); i++)
             {
                 if (i >= casu_data[name].ir_ranges.size()) break;
                 double raw = ranges.raw_value(i);
@@ -96,11 +105,21 @@ void Subscriber::messageReceived(const QList<QByteArray>& message)
     }
     else if (name == "FishPosition")
     {
-
+        QString id("fish-00");
+        id.append(message.at(1));
+        if (fish_data.find(id) != fish_data.end())
+        {
+            fish_data[id].appendPos(message.at(2).toDouble(),message.at(3).toDouble());
+        }
     }
     else if (name == "CASUPosition")
     {
-
+        QString id("ribot-00");
+        id.append(message.at(1));
+        if (ribot_data.find(id) != fish_data.end())
+        {
+            ribot_data[id].appendPos(message.at(2).toDouble(),message.at(3).toDouble());
+        }
     }
 }
 
@@ -117,9 +136,26 @@ Subscriber::CasuData::CasuData(void)
 }
 
 Subscriber::FishData::FishData(void)
-    : x(1),
-      y(1),
-      direction(1)
+    : direction(1)
 {
-    x.at(0)
+    x.push_front(100.0);
+    x.push_front(100.0);
+    y.push_front(100.0);
+    y.push_front(100.0);
+}
+
+void Subscriber::FishData::appendPos(double xk, double yk)
+{
+    x.push_front(xk);
+    y.push_front(yk);
+
+    if (x.size() > buff_max)
+    {
+        x.pop_back();
+        y.pop_back();
+    }
+
+    // Create ractangle for rendering the fish
+    pose.setRect(x.at(0), y.at(0), )
+    // TODO: compute swimming direction
 }
