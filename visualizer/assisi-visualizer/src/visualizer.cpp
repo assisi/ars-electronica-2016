@@ -13,12 +13,21 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::VAssisi),
     default_scene_width_(1600),
-    default_scene_height_(1000)
+    default_scene_height_(1000),
+    td_(34) // 30 fps
 
 {
     //TODO: Implement config file reading
 
-    sub_ = new Subscriber("tcp://localhost:5555","casu-001",this);
+    QList<QString> addresses;
+    addresses.append("tcp://localhost:5555");
+    //addresses.append("tcp://localhost:5555");
+
+    QList<QString> topics;
+    topics.append("casu-001");
+    topics.append("casu-002");
+
+    sub_ = new Subscriber(addresses,topics,this);
 
     fish_tank_outer_.setRect(80, 50, 480, 900);
     fish_tank_inner_.setRect(200, 170, 240, 660);
@@ -28,6 +37,10 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     casu_bottom_.setRect(1220, 675, 100, 100);
     heating_area_top_ = casu_top_.marginsAdded(QMargins(100,100,100,100));
     heating_area_bottom_ = casu_bottom_.marginsAdded(QMargins(100,100,100,100));
+
+    double_arrow_.setRect(800-200, 500-200, 400, 400);
+    top_arrow_.setRect(800-200, 200-65, 400, 130);
+    bottom_arrow_.setRect(800-200, 800-65, 400, 130);
     ui->setupUi(this);
 
     svg_ = new QSvgRenderer(this);
@@ -36,7 +49,7 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     // Qt5 style connect does not work with overloaded functions
     //connect(timer, &QTimer::timeout, this, &QWidget::update);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(34); // 30 FPS
+    timer->start(td_); // 30 FPS
 }
 
 Visualizer::~Visualizer()
@@ -54,8 +67,10 @@ void Visualizer::paintEvent(QPaintEvent *event)
                   this->geometry().height()/default_scene_height_);
 
     // Draw fish tank
+    svg_->load(QString("://artwork/fisharena2.svg"));
+    svg_->render(&painter, fish_tank_outer_);
     painter.drawRect(fish_tank_outer_);
-    painter.drawRect(fish_tank_inner_);
+    //painter.drawRect(fish_tank_inner_);
 
     // Draw fish
     //painter.draw...
@@ -73,7 +88,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     QColor color = tempToColor(sub_->casu_data["casu-001"].temp);
     grad_top.setColorAt(0.0,color);
     grad_top.setColorAt(0.75,color);
-    grad_top.setColorAt(1,QColor(255,255,255));
+    grad_top.setColorAt(1,QColor(251,239,191));
     painter.setBrush(grad_top);
     painter.setPen(Qt::NoPen);
     painter.drawEllipse(heating_area_top_);
@@ -83,7 +98,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     color = tempToColor(sub_->casu_data["casu-002"].temp);
     grad_bottom.setColorAt(0.0,color);
     grad_bottom.setColorAt(0.75,color);
-    grad_bottom.setColorAt(1,QColor(255,255,255));
+    grad_bottom.setColorAt(1,QColor(251,239,191));
     painter.setBrush(grad_bottom);
     painter.drawEllipse(heating_area_bottom_);
 
@@ -143,7 +158,11 @@ void Visualizer::paintEvent(QPaintEvent *event)
     svg_->render(&painter,casu_bottom_);
 
     // Draw comms
-
+    svg_->load(QString("://artwork/doublearrow.svg"));
+    svg_->render(&painter, double_arrow_);
+    svg_->load(QString("://artwork/arrow.svg"));
+    svg_->render(&painter, top_arrow_);
+    svg_->render(&painter, bottom_arrow_);
     /*
     QPainter painter(this);
     QPixmap ribot("://artwork/ribot.jpg");

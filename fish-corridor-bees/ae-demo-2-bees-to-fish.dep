@@ -6,14 +6,14 @@ bee-arena :
         hostname : bbg-001
         user : assisi
         prefix : deploy/ae-2
-        controller : controllers/communicate_and_heat.py
+        controller : controllers/communicate.py
         args : ['left']
 
     casu-002 :
         hostname : bbg-001
         user : assisi
         prefix : deploy/ae-2
-        controller : controllers/communicate_and_heat.py
+        controller : controllers/communicate.py
         args : ['right']
 
 fish-tank : 

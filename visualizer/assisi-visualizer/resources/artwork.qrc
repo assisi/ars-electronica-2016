@@ -1,8 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>artwork/ribot.jpg</file>
         <file>artwork/bee.svg</file>
         <file>artwork/button.svg</file>
         <file>artwork/beearena.svg</file>
+        <file>artwork/fisharena2.svg</file>
+        <file>artwork/doublearrow.svg</file>
+        <file>artwork/arrow.svg</file>
     </qresource>
 </RCC>

@@ -9,8 +9,8 @@ class Subscriber : public QObject
 {
     Q_OBJECT
 public:
-    explicit Subscriber(const QString& address,
-                        const QString& topic,
+    explicit Subscriber(const QList<QString>& addresses,
+                        const QList<QString>& topics,
                         QObject *parent = 0);
 
     //! Struct for hodling CASU data
@@ -32,6 +32,25 @@ public:
      */
     CasuMap casu_data;
 
+    //! Struct for holding fish data
+    struct FishData
+    {
+        //! Initialize all values to reasonable defaults
+        FishData();
+
+        QList<double> x;
+        QList<double> y;
+        //! +1 is CCW, -1 is CW
+        double direction;
+    };
+    typedef std::map<std::string,FishData> FishMap;
+
+    //! Stores fish data
+    /*! Everything is public, but
+        Only the subscriber is supposed to write!
+     */
+    FishMap fish_data;
+
 signals:
     void pingReceived(const QList<QByteArray>& message);
 
@@ -43,8 +62,8 @@ private:
     // ZMQ connection details
     nzmqt::ZMQContext* context_;
 
-    QString address_;
-    QString topic_;
+    QList<QString> addresses_;
+    QList<QString> topics_;
 
     nzmqt::ZMQSocket* socket_;
 

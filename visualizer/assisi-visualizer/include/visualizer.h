@@ -40,9 +40,17 @@ private:
     QRect heating_area_top_;
     QRect heating_area_bottom_;
 
+    // Communication arrow dimensions
+    QRect double_arrow_;
+    QRect top_arrow_;
+    QRect bottom_arrow_;
+
     // Scene dimensions
     qreal default_scene_width_;
     qreal default_scene_height_;
+
+    // Sample time for scene refreshing
+    double td_;
 
 };
 

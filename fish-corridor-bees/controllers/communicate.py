@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     # Hardcode thresholds quick'n dirty
     thresholds = {}
-    thresholds['left'] = [14000,11000,11000,11000,11000,10000]
-    thresholds['right'] = [11000,9000,14000,13000,10000,10000]
+    thresholds['left'] = [11300,14500,18500,17600,18500,12000]
+    thresholds['right'] = [13500,12400,20000,12500,15500,13500]
 
     while True:
         
@@ -37,25 +37,6 @@ if __name__ == '__main__':
                                            thresholds[myside])]
         estimate = float(sum(detected))/float(len(detected))
         c.send_message('cats',str(estimate))
-
-#        msg = c.read_message()
-#        if msg:
-#            print('Received: ' + msg['data'])
-#            data = msg['data'].split(',')
-#            count = 0
-#            for item in data:
-#                if item.split(':')[1] == myside:
-#                    count += 1
-#            if count == len(data):
-#                # All fish are on our side -> heat up
-#                temp_set = sorted([temp_min,temp_set+0.5,temp_max])[1]
-#                c.set_temp(temp_set)
-#                c.set_diagnostic_led_rgb(r = 1)
-#            else:
-#                # Cool down
-#                temp_set = sorted([temp_min,temp_set-0.5,temp_max])[1]
-#                c.set_temp(temp_set)
-#                c.set_diagnostic_led_rgb(b=1)
 
         time.sleep(1.0)
         

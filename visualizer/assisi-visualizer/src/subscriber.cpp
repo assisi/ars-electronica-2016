@@ -3,12 +3,12 @@
 
 using namespace nzmqt;
 
-Subscriber::Subscriber(const QString& address,
-                     const QString& topic,
+Subscriber::Subscriber(const QList<QString>& addresses,
+                     const QList<QString>& topics,
                      QObject *parent)
     : QObject(parent),
-      address_(address),
-      topic_(topic),
+      addresses_(addresses),
+      topics_(topics),
       socket_(NULL)
 {
     context_ = createDefaultContext(this);
@@ -18,11 +18,17 @@ Subscriber::Subscriber(const QString& address,
     socket_->setObjectName("Subscriber.Socket.socket(SUB)");
     connect(socket_, &ZMQSocket::messageReceived, this, &Subscriber::messageReceived);
 
-    socket_->subscribeTo(topic_);
-    qDebug() << "Subscribed to " << topic_;
-    socket_->subscribeTo("casu-002");
-    socket_->connectTo(address_);
-    qDebug() << "Connected socket to address " << address_;
+    for (unsigned i = 0; i < topics_.length(); i++)
+    {
+        socket_->subscribeTo(topics_.at(i));
+        qDebug() << "Subscribed to " << topics_.at(i);
+    }
+
+    for (unsigned i = 0; i < addresses_.length(); i++)
+    {
+        socket_->connectTo(addresses_.at(i));
+        qDebug() << "Connected socket to address " << addresses_.at(i);
+    }
 
     casu_data["casu-001"] = CasuData();
     // Set thresholds
@@ -100,4 +106,12 @@ Subscriber::CasuData::CasuData(void)
     {
         ir_ranges[i] = 0.0;
     }
+}
+
+Subscriber::FishData::FishData(void)
+    : x(1),
+      y(1),
+      direction(1)
+{
+
 }
