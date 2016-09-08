@@ -6,13 +6,15 @@
         <file>artwork/fisharena2.svg</file>
         <file>artwork/doublearrow.svg</file>
         <file>artwork/arrow.svg</file>
-        <file>artwork/fish.svg</file>
-        <file>artwork/ribot.svg</file>
         <file>artwork/msgcontainer.svg</file>
         <file>artwork/msgcontainer2.svg</file>
-        <file>artwork/ribot-cw.svg</file>
         <file>artwork/fish-ccw.svg</file>
         <file>artwork/fish-cw.svg</file>
+        <file>artwork/msg-fish-ccw.svg</file>
+        <file>artwork/msg-fish-cw.svg</file>
+        <file>artwork/msg-ribot-ccw.svg</file>
+        <file>artwork/msg-ribot-cw.svg</file>
         <file>artwork/ribot-ccw.svg</file>
+        <file>artwork/ribot-cw.svg</file>
     </qresource>
 </RCC>

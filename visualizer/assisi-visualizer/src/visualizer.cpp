@@ -79,14 +79,28 @@ void Visualizer::paintEvent(QPaintEvent *event)
     //painter.drawRect(fish_tank_inner_);
 
     // Draw fish
-    svg_->load(QString("://artwork/fish.svg"));
+    if (sub_->msg_cats.fish_direction > 0)
+    {
+        svg_->load(QString("://artwork/fish-ccw.svg"));
+    }
+    else
+    {
+        svg_->load(QString("://artwork/fish-cw.svg"));
+    }
     for (Subscriber::FishMap::iterator it = sub_->fish_data.begin(); it != sub_->fish_data.end(); it++)
     {
         svg_->render(&painter,it->second.pose);
     }
 
     // Draw ribot
-    svg_->load(QString("://artwork/ribot.svg"));
+    if (sub_->msg_cats.ribot_direction > 0)
+    {
+        svg_->load(QString("://artwork/ribot-ccw.svg"));
+    }
+    else
+    {
+        svg_->load(QString("://artwork/ribot-cw.svg"));
+    }
     for (Subscriber::FishMap::iterator it = sub_->ribot_data.begin(); it != sub_->ribot_data.end(); it++)
     {
         svg_->render(&painter,it->second.pose);
@@ -202,7 +216,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     }
 
     sub_->msg_cats.update();
-    sub_->msg_cats.active = true;
+    //sub_->msg_cats.active = true;
     if (sub_->msg_cats.active)
     {
         svg_->load(QString("://artwork/msgcontainer2.svg"));
@@ -211,11 +225,11 @@ void Visualizer::paintEvent(QPaintEvent *event)
         svg_->render(&painter, sub_->msg_cats.pose_bot);
         if (sub_->msg_cats.ribot_direction > 0)
         {
-            svg_->load(QString("://artwork/ribot-ccw.svg"));
+            svg_->load(QString("://artwork/msg-ribot-ccw.svg"));
         }
         else
         {
-            svg_->load(QString("://artwork/ribot-cw.svg"));
+            svg_->load(QString("://artwork/msg-ribot-cw.svg"));
         }
         /*
         painter.save();
@@ -230,11 +244,11 @@ void Visualizer::paintEvent(QPaintEvent *event)
         svg_->render(&painter, sub_->msg_cats.ribot_dir_bot);
         if (sub_->msg_cats.fish_direction > 0)
         {
-            svg_->load(QString("://artwork/fish-ccw.svg"));
+            svg_->load(QString("://artwork/msg-fish-ccw.svg"));
         }
         else
         {
-            svg_->load(QString("://artwork/ribot-ccw.svg"));
+            svg_->load(QString("://artwork/msg-fish-cw.svg"));
         }
         painter.save();
         //painter.rotate(sub_->msg_cats.rot_fish);
