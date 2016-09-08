@@ -85,8 +85,10 @@ void Visualizer::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     // Scale all items
-    painter.scale(this->geometry().width()/default_scene_width_,
-                  this->geometry().height()/default_scene_height_);
+    double scaling_x = this->geometry().width()/default_scene_width_;
+    double scaling_y = this->geometry().height()/default_scene_height_;
+    painter.scale(scaling_x,
+                  scaling_y);
 
     // Draw fish tank
     svg_->load(QString("://artwork/fisharena2.svg"));
@@ -196,11 +198,22 @@ void Visualizer::paintEvent(QPaintEvent *event)
         }
     }
 
-    painter.save();
+    QConicalGradient grad_tref_top(casu_top_.center(),270);
+    grad_tref_top.setColorAt(1,tempToColor(24));
+    grad_tref_top.setColorAt(0,tempToColor(40));
+    painter.setBrush(grad_tref_top);
+    painter.drawPie(casu_top_,-45*16,270*16);
+    //painter.save();
     svg_->load(QString("://artwork/button.svg"));
     //painter.rotate(temp_ref);
     svg_->render(&painter,casu_top_);
-    painter.restore();
+    //painter.restore();
+
+    QConicalGradient grad_tref_bottom(casu_bottom_.center(),270);
+    grad_tref_bottom.setColorAt(1,tempToColor(24));
+    grad_tref_bottom.setColorAt(0,tempToColor(40));
+    painter.setBrush(grad_tref_bottom);
+    painter.drawPie(casu_bottom_,-45*16,270*16);
     //painter.rotate(temp_ref);
     svg_->render(&painter,casu_bottom_);
 
@@ -232,7 +245,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     }
 
     sub_->msg_cats.update();
-    //sub_->msg_cats.active = true;
+    sub_->msg_cats.active = true;
     if (sub_->msg_cats.active)
     {
         svg_->load(QString("://artwork/msgcontainer2.svg"));
@@ -247,17 +260,22 @@ void Visualizer::paintEvent(QPaintEvent *event)
         {
             svg_->load(QString("://artwork/msg-ribot-cw.svg"));
         }
-        /*
+
         painter.save();
         QTransform T;
+        T.scale(scaling_x,scaling_y);
         T.translate(sub_->msg_cats.ribot_dir_top.center().x(),
                     sub_->msg_cats.ribot_dir_top.center().y());
         painter.setWorldTransform(T);
         painter.rotate(sub_->msg_cats.rot_ribot);
-        */
-        svg_->render(&painter, sub_->msg_cats.ribot_dir_top);
-        //painter.restore();
+        QRectF temp_rect = sub_->msg_cats.ribot_dir_top;
+        temp_rect.moveCenter(QPoint(0,0));
+        svg_->render(&painter, temp_rect);
+        painter.restore();
+
+
         svg_->render(&painter, sub_->msg_cats.ribot_dir_bot);
+
         if (sub_->msg_cats.fish_direction > 0)
         {
             svg_->load(QString("://artwork/msg-fish-ccw.svg"));
@@ -272,15 +290,6 @@ void Visualizer::paintEvent(QPaintEvent *event)
         svg_->render(&painter, sub_->msg_cats.fish_dir_bot);
         painter.restore();
     }
-
-    /*
-    QPainter painter(this);
-    QPixmap ribot("://artwork/ribot.jpg");
-    QRectF target(10.0, 20.0, 80.0, 60.0);
-    QRectF source(0.0, 0.0, 267.0, 179.0);
-    painter.drawPixmap(target, ribot, source);
-    */
-
 }
 
 QColor Visualizer::tempToColor(double temp)

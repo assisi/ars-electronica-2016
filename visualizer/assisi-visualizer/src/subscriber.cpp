@@ -268,7 +268,7 @@ Subscriber::CatsMsg::CatsMsg(int kx0, int ky0, int kw, int kh)
       h(kh),
       dx(-4),
       dy(3),
-      drot(12),
+      drot(-12),
       x_mid(800),
       x_min(600),
       active(false)
