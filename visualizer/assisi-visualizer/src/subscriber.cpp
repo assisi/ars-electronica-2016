@@ -7,9 +7,9 @@ Subscriber::Subscriber(const QList<QString>& addresses,
                      const QList<QString>& topics,
                      QObject *parent)
     : QObject(parent),
-      msg_top(CasuMsg(1000,200)),
-      msg_bottom(CasuMsg(1000,800)),
-      msg_cats(CatsMsg(650,500)),
+      msg_top(CasuMsg(600,200)),
+      msg_bottom(CasuMsg(600,800)),
+      msg_cats(CatsMsg(950,500)),
       addresses_(addresses),
       topics_(topics),
       socket_(NULL)
@@ -59,8 +59,8 @@ Subscriber::Subscriber(const QList<QString>& addresses,
     //fish_data["fish-005"] = FishData();
 
     ribot_data["ribot-000"] = FishData();
-    //ribot_data["ribot-001"] = FishData();
-    //ribot_data["ribot-002"] = FishData();
+    ribot_data["ribot-001"] = FishData();
+    ribot_data["ribot-002"] = FishData();
     //ribot_data["ribot-003"] = FishData();
 }
 
@@ -192,7 +192,7 @@ Subscriber::FishData::FishData(void)
       buff_max(10),
       tank_scale_x(440.0/500.0),
       tank_scale_y(900.0/500.0),
-      tank_offset_x(95),
+      tank_offset_x(1055),
       tank_offset_y(50)
 {
     appendPos(100.0,100.0);
@@ -222,8 +222,8 @@ Subscriber::CasuMsg::CasuMsg(int kx0, int ky, int kw, int kh)
       y(ky),
       w(kw),
       h(kh),
-      dx(-4),
-      x_min(600),
+      dx(4),
+      x_max(1000),
       active(false)
 {
 
@@ -246,7 +246,7 @@ void Subscriber::CasuMsg::update(void)
         x += dx;
     }
 
-    if (x <= x_min)
+    if (x >= x_max)
     {
         x = x0;
         active = false;
@@ -266,11 +266,11 @@ Subscriber::CatsMsg::CatsMsg(int kx0, int ky0, int kw, int kh)
       rot_ribot(0),
       w(kw),
       h(kh),
-      dx(4),
+      dx(-4),
       dy(3),
       drot(12),
-      x_mid(750),
-      x_max(950),
+      x_mid(800),
+      x_min(600),
       active(false)
 {
 
@@ -292,7 +292,7 @@ void Subscriber::CatsMsg::update(void)
     if (active)
     {
         x += dx;
-        if (x >= x_mid)
+        if (x <= x_mid)
         {
             y_top += dy;
             y_bot -= dy;
@@ -301,7 +301,7 @@ void Subscriber::CatsMsg::update(void)
         rot_ribot += ribot_direction * drot;
     }
 
-    if (x >= x_max)
+    if (x <= x_min)
     {
         active = false;
         x = x0;

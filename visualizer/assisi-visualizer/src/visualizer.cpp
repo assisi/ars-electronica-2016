@@ -34,7 +34,7 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     topics.append("cats");
 
     sub_ = new Subscriber(addresses,topics,this);
-
+    /*
     fish_tank_outer_.setRect(80, 50, 480, 900);
     fish_tank_inner_.setRect(200, 170, 240, 660);
 
@@ -47,6 +47,22 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     double_arrow_.setRect(800-200, 500-200, 400, 400);
     top_arrow_.setRect(800-200, 200-65, 400, 130);
     bottom_arrow_.setRect(800-200, 800-65, 400, 130);
+    */
+
+    // Flip everything, to match the physical layout
+    fish_tank_outer_.setRect(1040, 50, 480, 900);
+    fish_tank_inner_.setRect(1160, 170, 240, 660);
+
+    bee_arena_.setRect(80, 50, 480, 900);
+    casu_top_.setRect(260, 225, 100, 100);
+    casu_bottom_.setRect(260, 675, 100, 100);
+    heating_area_top_ = casu_top_.marginsAdded(QMargins(100,100,100,100));
+    heating_area_bottom_ = casu_bottom_.marginsAdded(QMargins(100,100,100,100));
+
+    double_arrow_.setRect(800-200, 500-200, 400, 400);
+    top_arrow_.setRect(800-200, 200-65, 400, 130);
+    bottom_arrow_.setRect(800-200, 800-65, 400, 130);
+
     ui->setupUi(this);
 
     svg_ = new QSvgRenderer(this);

@@ -78,7 +78,7 @@ public:
         void update(void);
         int count;
         double x0, x, y, w, h;
-        double dx, x_min;
+        double dx, x_max;
         bool active;
         QRectF pose;
     };
@@ -94,7 +94,7 @@ public:
         int fish_direction;
         int ribot_direction;
         double x0, y0, x, y_top, y_bot, rot_fish, rot_ribot, w, h;
-        double dx, dy, drot, x_mid, x_max;
+        double dx, dy, drot, x_mid, x_min;
         bool active;
         QRectF pose_top;
         QRectF pose_bot;
