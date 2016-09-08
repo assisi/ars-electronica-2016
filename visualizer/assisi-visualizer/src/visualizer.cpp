@@ -20,7 +20,10 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     //TODO: Implement config file reading
 
     QList<QString> addresses;
-    addresses.append("tcp://localhost:5555");
+    addresses.append("tcp://bbg-001:1555");
+    addresses.append("tcp://bbg-001:2555");
+    addresses.append("tcp://bbg-001:10101");
+    addresses.append("tcp://bbg-001:10102");
     addresses.append("tcp://cats-workstation:10203");
 
     QList<QString> topics;
@@ -28,6 +31,7 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     topics.append("casu-002");
     topics.append("FishPosition");
     topics.append("CASUPosition");
+    topics.append("cats");
 
     sub_ = new Subscriber(addresses,topics,this);
 
@@ -75,18 +79,17 @@ void Visualizer::paintEvent(QPaintEvent *event)
     //painter.drawRect(fish_tank_inner_);
 
     // Draw fish
+    svg_->load(QString("://artwork/fish.svg"));
     for (Subscriber::FishMap::iterator it = sub_->fish_data.begin(); it != sub_->fish_data.end(); it++)
     {
-        if (it->first().contains(QString("fish")))
-        {
-            svg_->load(QString("://artwork/ribot.svg"));
-            svg_->render(&painter,);
-        }
-        else if (it->first().contains(QSting("ribot")))
-        {
-            svg_->load(QString("://artwork/ribot.svg"));
-            svg_->render(&painter,);
-        }
+        svg_->render(&painter,it->second.pose);
+    }
+
+    // Draw ribot
+    svg_->load(QString("://artwork/ribot.svg"));
+    for (Subscriber::FishMap::iterator it = sub_->ribot_data.begin(); it != sub_->ribot_data.end(); it++)
+    {
+        svg_->render(&painter,it->second.pose);
     }
 
     // Draw bee arena
@@ -177,6 +180,69 @@ void Visualizer::paintEvent(QPaintEvent *event)
     svg_->load(QString("://artwork/arrow.svg"));
     svg_->render(&painter, top_arrow_);
     svg_->render(&painter, bottom_arrow_);
+
+    // Casu to cats
+    svg_->load(QString("://artwork/msgcontainer.svg"));
+    sub_->msg_top.update();
+    QFont font;
+    font.setPointSize(24);
+    painter.setFont(font);
+    if (sub_->msg_top.active)
+    {
+        svg_->render(&painter, sub_->msg_top.pose);
+        painter.setPen(tempToColor(sub_->casu_data["casu-001"].temp));
+        painter.drawText(sub_->msg_top.pose,Qt::AlignCenter, QString::number(sub_->msg_top.count));
+    }
+    sub_->msg_bottom.update();
+    if (sub_->msg_bottom.active)
+    {
+        svg_->render(&painter, sub_->msg_bottom.pose);
+        painter.setPen(tempToColor(sub_->casu_data["casu-002"].temp));
+        painter.drawText(sub_->msg_bottom.pose,Qt::AlignCenter, QString::number(sub_->msg_bottom.count));
+    }
+
+    sub_->msg_cats.update();
+    sub_->msg_cats.active = true;
+    if (sub_->msg_cats.active)
+    {
+        svg_->load(QString("://artwork/msgcontainer2.svg"));
+        painter.setPen(Qt::NoPen);
+        svg_->render(&painter, sub_->msg_cats.pose_top);
+        svg_->render(&painter, sub_->msg_cats.pose_bot);
+        if (sub_->msg_cats.ribot_direction > 0)
+        {
+            svg_->load(QString("://artwork/ribot-ccw.svg"));
+        }
+        else
+        {
+            svg_->load(QString("://artwork/ribot-cw.svg"));
+        }
+        /*
+        painter.save();
+        QTransform T;
+        T.translate(sub_->msg_cats.ribot_dir_top.center().x(),
+                    sub_->msg_cats.ribot_dir_top.center().y());
+        painter.setWorldTransform(T);
+        painter.rotate(sub_->msg_cats.rot_ribot);
+        */
+        svg_->render(&painter, sub_->msg_cats.ribot_dir_top);
+        //painter.restore();
+        svg_->render(&painter, sub_->msg_cats.ribot_dir_bot);
+        if (sub_->msg_cats.fish_direction > 0)
+        {
+            svg_->load(QString("://artwork/fish-ccw.svg"));
+        }
+        else
+        {
+            svg_->load(QString("://artwork/ribot-ccw.svg"));
+        }
+        painter.save();
+        //painter.rotate(sub_->msg_cats.rot_fish);
+        svg_->render(&painter, sub_->msg_cats.fish_dir_top);
+        svg_->render(&painter, sub_->msg_cats.fish_dir_bot);
+        painter.restore();
+    }
+
     /*
     QPainter painter(this);
     QPixmap ribot("://artwork/ribot.jpg");

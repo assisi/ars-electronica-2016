@@ -8,5 +8,11 @@
         <file>artwork/arrow.svg</file>
         <file>artwork/fish.svg</file>
         <file>artwork/ribot.svg</file>
+        <file>artwork/msgcontainer.svg</file>
+        <file>artwork/msgcontainer2.svg</file>
+        <file>artwork/ribot-cw.svg</file>
+        <file>artwork/fish-ccw.svg</file>
+        <file>artwork/fish-cw.svg</file>
+        <file>artwork/ribot-ccw.svg</file>
     </qresource>
 </RCC>

@@ -24,6 +24,11 @@ if __name__ == '__main__':
 
     myside = sys.argv[2]
 
+    # Hardcode thresholds quick'n dirty
+    thresholds = {}
+    thresholds['left'] = [11300,14500,18500,17600,18500,12000]
+    thresholds['right'] = [15000,13500,20500,12500,15500,13500]
+
     directions = {'left':'CCW','right':'CW'}
     mydirection = directions[myside]
 
@@ -48,4 +53,11 @@ if __name__ == '__main__':
                         temp_set = sorted([temp_min,temp_set-0.5,temp_max])[1]
                         c.set_temp(temp_set)
                         c.set_diagnostic_led_rgb(b=1)
+
+        # Estimate bee density
+        detected = [x > t for (x,t) in zip(c.get_ir_raw_value(casu.ARRAY),
+                                           thresholds[myside])]
+        estimate = float(sum(detected))/float(len(detected))
+        c.send_message('cats',str(estimate))
+
         time.sleep(0.5)
