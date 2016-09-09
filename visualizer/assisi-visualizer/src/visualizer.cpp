@@ -121,7 +121,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     QColor color = tempToColor(sub_->casu_data["casu-001"].temp);
     grad_top.setColorAt(0.0,color);
     grad_top.setColorAt(0.75,color);
-    grad_top.setColorAt(1,QColor(251,239,191));
+    grad_top.setColorAt(1,QColor(255,255,255,0));
     painter.setBrush(grad_top);
     painter.setPen(Qt::NoPen);
     painter.drawEllipse(heating_area_top_);
@@ -131,7 +131,7 @@ void Visualizer::paintEvent(QPaintEvent *event)
     color = tempToColor(sub_->casu_data["casu-002"].temp);
     grad_bottom.setColorAt(0.0,color);
     grad_bottom.setColorAt(0.75,color);
-    grad_bottom.setColorAt(1,QColor(251,239,191));
+    grad_bottom.setColorAt(1,QColor(255,255,255,0));
     painter.setBrush(grad_bottom);
     painter.drawEllipse(heating_area_bottom_);
 
@@ -184,8 +184,12 @@ void Visualizer::paintEvent(QPaintEvent *event)
 
     // Draw temp scale
     QConicalGradient grad_tref_top(casu_top_.center(),270);
-    grad_tref_top.setColorAt(1,tempToColor(24));
-    grad_tref_top.setColorAt(0,tempToColor(40));
+    QColor scale_color_min = tempToColor(24);
+    scale_color_min.setAlpha(255);
+    grad_tref_top.setColorAt(1,scale_color_min);
+    QColor scale_color_max = tempToColor(40);
+    scale_color_max.setAlpha(255);
+    grad_tref_top.setColorAt(0,scale_color_max);
     painter.setBrush(grad_tref_top);
     painter.drawPie(casu_top_,-45*16,270*16);
     // Draw casu body
@@ -198,8 +202,8 @@ void Visualizer::paintEvent(QPaintEvent *event)
 
     // Draw temp scale
     QConicalGradient grad_tref_bottom(casu_bottom_.center(),270);
-    grad_tref_bottom.setColorAt(1,tempToColor(24));
-    grad_tref_bottom.setColorAt(0,tempToColor(40));
+    grad_tref_bottom.setColorAt(1,scale_color_min);
+    grad_tref_bottom.setColorAt(0,scale_color_max);
     painter.setBrush(grad_tref_bottom);
     painter.drawPie(casu_bottom_,-45*16,270*16);
     // Draw casu body
@@ -305,7 +309,7 @@ QColor Visualizer::tempToColor(double temp)
     int hue = k*(temp-temp_min) + hue_min;
 
     QColor color;
-    color.setHsv(hue, 255, 255);
+    color.setHsv(hue, 255, 255, 100);
 
     return color;
 }

@@ -59,8 +59,8 @@ Subscriber::Subscriber(const QList<QString>& addresses,
     //fish_data["fish-005"] = FishData();
 
     ribot_data["ribot-000"] = FishData();
-    ribot_data["ribot-001"] = FishData();
-    ribot_data["ribot-002"] = FishData();
+    //ribot_data["ribot-001"] = FishData();
+    //ibot_data["ribot-002"] = FishData();
     //ribot_data["ribot-003"] = FishData();
 }
 
