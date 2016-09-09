@@ -18,9 +18,14 @@ public:
     explicit Visualizer(const QString& config_path, QWidget *parent = 0);
     ~Visualizer();
     QColor tempToColor(double temp);
+    double tempToAngle(double temp);
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
+    void drawRotatedSvg(QPainter& painter,
+                        QRectF area,
+                        double angle,
+                        const QString& resource_name);
 
 private:
     Ui::VAssisi *ui;

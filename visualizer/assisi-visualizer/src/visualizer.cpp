@@ -34,22 +34,6 @@ Visualizer::Visualizer(const QString &config_path, QWidget *parent) :
     topics.append("cats");
 
     sub_ = new Subscriber(addresses,topics,this);
-    /*
-    fish_tank_outer_.setRect(80, 50, 480, 900);
-    fish_tank_inner_.setRect(200, 170, 240, 660);
-
-    bee_arena_.setRect(1040, 50, 480, 900);
-    casu_top_.setRect(1220, 225, 100, 100);
-    casu_bottom_.setRect(1220, 675, 100, 100);
-    heating_area_top_ = casu_top_.marginsAdded(QMargins(100,100,100,100));
-    heating_area_bottom_ = casu_bottom_.marginsAdded(QMargins(100,100,100,100));
-
-    double_arrow_.setRect(800-200, 500-200, 400, 400);
-    top_arrow_.setRect(800-200, 200-65, 400, 130);
-    bottom_arrow_.setRect(800-200, 800-65, 400, 130);
-    */
-
-    // Flip everything, to match the physical layout
     fish_tank_outer_.setRect(1040, 50, 480, 900);
     fish_tank_inner_.setRect(1160, 170, 240, 660);
 
@@ -198,24 +182,31 @@ void Visualizer::paintEvent(QPaintEvent *event)
         }
     }
 
+    // Draw temp scale
     QConicalGradient grad_tref_top(casu_top_.center(),270);
     grad_tref_top.setColorAt(1,tempToColor(24));
     grad_tref_top.setColorAt(0,tempToColor(40));
     painter.setBrush(grad_tref_top);
     painter.drawPie(casu_top_,-45*16,270*16);
-    //painter.save();
-    svg_->load(QString("://artwork/button.svg"));
-    //painter.rotate(temp_ref);
-    svg_->render(&painter,casu_top_);
+    // Draw casu body
+    painter.setBrush(QBrush(QColor(255,255,255)));
+    painter.drawPie(casu_top_,225*16,90*16);
+    drawRotatedSvg(painter, casu_top_,
+                   tempToAngle(sub_->casu_data["casu-001"].temp_ref), QString("://artwork/button.svg"));
+    //svg_->render(&painter,casu_top_);
     //painter.restore();
 
+    // Draw temp scale
     QConicalGradient grad_tref_bottom(casu_bottom_.center(),270);
     grad_tref_bottom.setColorAt(1,tempToColor(24));
     grad_tref_bottom.setColorAt(0,tempToColor(40));
     painter.setBrush(grad_tref_bottom);
     painter.drawPie(casu_bottom_,-45*16,270*16);
-    //painter.rotate(temp_ref);
-    svg_->render(&painter,casu_bottom_);
+    // Draw casu body
+    painter.setBrush(QBrush(QColor(255,255,255)));
+    painter.drawPie(casu_bottom_,225*16,90*16);
+    drawRotatedSvg(painter, casu_bottom_,
+                   tempToAngle(sub_->casu_data["casu-002"].temp_ref), QString("://artwork/button.svg"));
 
     // Draw comms
     svg_->load(QString("://artwork/doublearrow.svg"));
@@ -245,51 +236,61 @@ void Visualizer::paintEvent(QPaintEvent *event)
     }
 
     sub_->msg_cats.update();
-    sub_->msg_cats.active = true;
+    //sub_->msg_cats.active = true;
     if (sub_->msg_cats.active)
     {
+        // Render message containers
         svg_->load(QString("://artwork/msgcontainer2.svg"));
         painter.setPen(Qt::NoPen);
         svg_->render(&painter, sub_->msg_cats.pose_top);
         svg_->render(&painter, sub_->msg_cats.pose_bot);
+
+        // Render ribot swim directions twice
+        QString ribot_dir_svg("://artwork/msg-ribot-cw.svg");
         if (sub_->msg_cats.ribot_direction > 0)
         {
-            svg_->load(QString("://artwork/msg-ribot-ccw.svg"));
+            ribot_dir_svg = "://artwork/msg-ribot-ccw.svg";
         }
-        else
-        {
-            svg_->load(QString("://artwork/msg-ribot-cw.svg"));
-        }
+        drawRotatedSvg(painter, sub_->msg_cats.ribot_dir_top,
+                       sub_->msg_cats.rot_ribot, ribot_dir_svg);
+        drawRotatedSvg(painter, sub_->msg_cats.ribot_dir_bot,
+                       sub_->msg_cats.rot_ribot, ribot_dir_svg);
 
-        painter.save();
-        QTransform T;
-        T.scale(scaling_x,scaling_y);
-        T.translate(sub_->msg_cats.ribot_dir_top.center().x(),
-                    sub_->msg_cats.ribot_dir_top.center().y());
-        painter.setWorldTransform(T);
-        painter.rotate(sub_->msg_cats.rot_ribot);
-        QRectF temp_rect = sub_->msg_cats.ribot_dir_top;
-        temp_rect.moveCenter(QPoint(0,0));
-        svg_->render(&painter, temp_rect);
-        painter.restore();
-
-
-        svg_->render(&painter, sub_->msg_cats.ribot_dir_bot);
-
+        // Render fish swim directions twice
+        QString fish_dir_svg = "://artwork/msg-fish-cw.svg";
         if (sub_->msg_cats.fish_direction > 0)
         {
-            svg_->load(QString("://artwork/msg-fish-ccw.svg"));
+            fish_dir_svg = "://artwork/msg-fish-ccw.svg";
         }
-        else
-        {
-            svg_->load(QString("://artwork/msg-fish-cw.svg"));
-        }
-        painter.save();
-        //painter.rotate(sub_->msg_cats.rot_fish);
-        svg_->render(&painter, sub_->msg_cats.fish_dir_top);
-        svg_->render(&painter, sub_->msg_cats.fish_dir_bot);
-        painter.restore();
+        drawRotatedSvg(painter, sub_->msg_cats.fish_dir_top,
+                       sub_->msg_cats.rot_fish, fish_dir_svg);
+        drawRotatedSvg(painter, sub_->msg_cats.fish_dir_bot,
+                       sub_->msg_cats.rot_fish, fish_dir_svg);
     }
+}
+
+void Visualizer::drawRotatedSvg(QPainter& painter,
+                                QRectF area,
+                                double angle,
+                                const QString& resource_name)
+{
+    painter.save();
+
+    // TODO: should avoid recalculating the scaling factors
+    double scaling_x = this->geometry().width()/default_scene_width_;
+    double scaling_y = this->geometry().height()/default_scene_height_;
+
+    QTransform T;
+    T.scale(scaling_x,scaling_y);
+    T.translate(area.center().x(),
+                area.center().y());
+    painter.setWorldTransform(T);
+    painter.rotate(angle);
+    area.moveCenter(QPoint(0,0));
+    svg_->load(resource_name);
+    svg_->render(&painter, area);
+
+    painter.restore();
 }
 
 QColor Visualizer::tempToColor(double temp)
@@ -307,4 +308,19 @@ QColor Visualizer::tempToColor(double temp)
     color.setHsv(hue, 255, 255);
 
     return color;
+}
+
+double Visualizer::tempToAngle(double temp)
+{
+    double angle = 0.0;
+    double temp_min = 24.0;
+    double temp_max = 40.0;
+    temp = clip(temp, temp_min, temp_max);
+
+    double ang_min = 0.0;
+    double ang_max = 270.0;
+    double k = (ang_max - ang_min) / (temp_max - temp_min);
+    angle = k*(temp-temp_min) + ang_min;
+
+    return angle;
 }
