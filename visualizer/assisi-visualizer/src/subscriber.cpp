@@ -38,18 +38,18 @@ Subscriber::Subscriber(const QList<QString>& addresses,
     casu_data["casu-001"].ir_thresholds[0] = 11300;
     casu_data["casu-001"].ir_thresholds[1] = 14500;
     casu_data["casu-001"].ir_thresholds[2] = 18500;
-    casu_data["casu-001"].ir_thresholds[3] = 17600;
-    casu_data["casu-001"].ir_thresholds[4] = 18500;
+    casu_data["casu-001"].ir_thresholds[3] = 19600;
+    casu_data["casu-001"].ir_thresholds[4] = 12500;
     casu_data["casu-001"].ir_thresholds[5] = 12000;
 
     casu_data["casu-002"] = CasuData();
     // Set thresholds
-    casu_data["casu-002"].ir_thresholds[0] = 15000;
-    casu_data["casu-002"].ir_thresholds[1] = 13500;
-    casu_data["casu-002"].ir_thresholds[2] = 20500;
-    casu_data["casu-002"].ir_thresholds[3] = 12500;
-    casu_data["casu-002"].ir_thresholds[4] = 15500;
-    casu_data["casu-002"].ir_thresholds[5] = 13500;
+    casu_data["casu-002"].ir_thresholds[0] = 14000;
+    casu_data["casu-002"].ir_thresholds[1] = 11500;
+    casu_data["casu-002"].ir_thresholds[2] = 17700;
+    casu_data["casu-002"].ir_thresholds[3] = 11500;
+    casu_data["casu-002"].ir_thresholds[4] = 14500;
+    casu_data["casu-002"].ir_thresholds[5] = 12500;
 
     fish_data["fish-000"] = FishData();
     fish_data["fish-001"] = FishData();

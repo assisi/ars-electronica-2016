@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     # Hardcode thresholds quick'n dirty
     thresholds = {}
-    thresholds['left'] = [11300,14500,18500,17600,18500,12000]
-    thresholds['right'] = [15000,13500,20500,12500,15500,13500]
+    thresholds['left'] = [11300,14500,18500,19600,12500,12000]
+    thresholds['right'] = [14000,11500,17700,11500,14500,12500]
 
     while True:
         
